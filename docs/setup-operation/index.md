@@ -109,7 +109,7 @@ To power on the access points:
 
 The Access Point will cycle from blue to green as it connects to the network:
 
-![Access Point Startup Sequence](/img/vts-guide/image17.png) ![LED Blue Status](/img/vts-guide/image19.png) ![LED Green Status](/img/vts-guide/image2.png)
+![LED Status Indicator](/img/vts-guide/correctstatusled.png)
 
 *Access point LED status progression: Initializing → Ready → Connected*
 
