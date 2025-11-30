@@ -507,6 +507,24 @@ h2 + .rcs-section-container {
   border-radius: 8px;
 }
 
+/* Full width map image in card */
+.highlight-card .card-content img[alt*="Training Area Map"] {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  display: block;
+}
+
+.highlight-card .card-content img[alt*="Training Area Map"] + em {
+  display: block;
+  text-align: center;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
 /* Antenna configuration images - side by side */
 .antenna-images-container {
   display: flex;
@@ -587,10 +605,33 @@ h2 + .rcs-section-container {
 .image-info-card-text {
   width: 60%;
   padding-right: 1rem !important;
+  padding-top: 0.5rem !important;
   font-size: 1em;
   line-height: 1.5;
   vertical-align: top;
   text-align: left;
+}
+
+.image-info-card-text table {
+  margin: 1rem 0 !important;
+  width: 100% !important;
+  border-collapse: collapse;
+}
+
+.image-info-card-text table th,
+.image-info-card-text table td {
+  padding: 0.875rem 1rem !important;
+  white-space: normal !important;
+  border: 1px solid var(--ifm-table-border-color);
+}
+
+.image-info-card-text table th {
+  background-color: var(--ifm-table-head-background);
+  font-weight: 600;
+}
+
+.image-info-card-text table tr:nth-child(even) {
+  background-color: var(--ifm-table-stripe-background);
 }
 
 .image-info-card-image {
@@ -610,7 +651,6 @@ h2 + .rcs-section-container {
   border-radius: 8px;
   margin: 0 auto !important;
   display: block;
-  vertical-align: middle;
 }
 
 .image-info-card-image em {

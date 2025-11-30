@@ -6,7 +6,13 @@ sidebar_position: 1
 
 ---
 
-## Machine Access Point Setup
+<div class="highlights-grid-single">
+
+<div class="highlight-card">
+
+### Machine Access Point Setup
+
+<div class="card-content">
 
 The Machine AP is designed to provide optimal antenna placement when operation but to pack away compactly for storage, thus, it requires a simple physical setup for deployment. The steps are as follows:
 
@@ -32,13 +38,19 @@ The Machine node is now ready to be mounted & powered on.
 
 </div>
 
----
+</div>
 
-## Power on and Startup Order for access points
+</div>
 
-<div class="ap-power-section">
+<div class="highlight-card">
 
-<div class="ap-power-text">
+### Power on and Startup Order for access points
+
+<div class="card-content">
+
+<table class="image-info-card">
+<tr>
+<td class="image-info-card-text">
 
 Always turn on Access Points FIRST before powering up other system components.
 
@@ -48,23 +60,26 @@ To power the access points:
 2. Release the button
 3. Wait for the access point to initialise (watch for status of the LED)
 
+</td>
+<td class="image-info-card-image">
+  ![Power Button](/img/vts-guide/ap-power-button.png)
+</td>
+</tr>
+</table>
+
 </div>
 
-<div class="ap-power-image">
-
-![Power Button](/img/vts-guide/ap-power-button.png)
-
 </div>
 
-</div>
+<div class="highlight-card">
 
----
+### Status LED Indicators
 
-## Status LED Indicators
+<div class="card-content">
 
-<div class="ap-led-section">
-
-<div class="ap-led-text">
+<table class="image-info-card">
+<tr>
+<td class="image-info-card-text">
 
 The Access Point will cycle from blue to green as it connects to the network:
 
@@ -74,11 +89,14 @@ The Access Point will cycle from blue to green as it connects to the network:
 | **Solid Blue** | Ready | Unit powered up, waiting to connect |
 | **Solid Green** | Connected | Meshed with other nodes - ready for operation |
 
+</td>
+<td class="image-info-card-image">
+  ![LED Status Indicator](/img/vts-guide/ap-status-led.png)
+</td>
+</tr>
+</table>
+
 </div>
-
-<div class="ap-led-image">
-
-![LED Status Indicator](/img/vts-guide/ap-status-led.png)
 
 </div>
 
