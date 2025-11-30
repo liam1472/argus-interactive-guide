@@ -1,4 +1,5 @@
 import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 
 const QuickStartIcon = () => (
@@ -60,8 +61,20 @@ const ManualIcon = () => (
 );
 
 export default function HomepageFeatures() {
+  const bannerUrl = useBaseUrl('/img/vts-guide/main-banner.png');
+  
   return (
-    <section className={styles.featuresSection}>
+    <section 
+      className={styles.featuresSection}
+      style={{
+        backgroundImage: `url(${bannerUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        position: 'relative'
+      }}
+    >
+      <div className={styles.overlay} />
       <div className={styles.buttonsContainer}>
         <Link
           className={styles.mainButton}

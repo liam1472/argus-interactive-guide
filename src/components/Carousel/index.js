@@ -6,13 +6,26 @@ export default function Carousel({ slides }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+  
+  // Call useBaseUrl for ALL slides to ensure consistent hook calls
+  // This prevents "Rendered more hooks than during the previous render" errors
+  // We MUST call useBaseUrl the same number of times every render
+  const imageUrls = slides.map((slide) => {
+    // Always call useBaseUrl - use the image path if it exists, otherwise empty string
+    return useBaseUrl(slide.image || '');
+  });
+  
+  const processedSlides = slides.map((slide, index) => ({
+    ...slide,
+    imageUrl: slide.image ? imageUrls[index] : null
+  }));
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+    setCurrentSlide((prev) => (prev + 1) % processedSlides.length);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    setCurrentSlide((prev) => (prev - 1 + processedSlides.length) % processedSlides.length);
   };
 
   const goToSlide = (index) => {
@@ -45,17 +58,17 @@ export default function Carousel({ slides }) {
   useEffect(() => {
     const handleKeyPress = (e) => {
       if (e.key === 'ArrowLeft') {
-        setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+        setCurrentSlide((prev) => (prev - 1 + processedSlides.length) % processedSlides.length);
       } else if (e.key === 'ArrowRight') {
-        setCurrentSlide((prev) => (prev + 1) % slides.length);
+        setCurrentSlide((prev) => (prev + 1) % processedSlides.length);
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [slides.length]);
+  }, [processedSlides.length]);
 
-  const currentSlideData = slides[currentSlide];
+  const currentSlideData = processedSlides[currentSlide];
 
   return (
     <div className={styles.carouselContainer}>
@@ -67,11 +80,11 @@ export default function Carousel({ slides }) {
       >
         {/* Main slide content */}
         <div className={styles.slideContent}>
-          {currentSlideData.image && (
+          {currentSlideData.imageUrl && (
             <div className={styles.imageContainer}>
               <img
-                src={useBaseUrl(currentSlideData.image)}
-                alt={currentSlideData.title}
+                src={currentSlideData.imageUrl}
+                alt={currentSlideData.title || 'Slide image'}
                 className={styles.slideImage}
               />
             </div>
@@ -82,14 +95,16 @@ export default function Carousel({ slides }) {
               <h2 className={styles.slideTitle}>{currentSlideData.title}</h2>
             )}
             {currentSlideData.content && (
-              <div className={styles.slideText}>{currentSlideData.content}</div>
+              <div className={`${styles.slideText} ${currentSlideData.warning ? styles.warningHighlight : ''}`}>
+                {currentSlideData.content}
+              </div>
             )}
             {currentSlideData.steps && (
-              <ol className={styles.stepsList}>
+              <ul className={currentSlideData.noNumbers ? styles.stepsListNoNumbers : styles.stepsList}>
                 {currentSlideData.steps.map((step, idx) => (
                   <li key={idx} className={styles.stepItem}>{step}</li>
                 ))}
-              </ol>
+              </ul>
             )}
           </div>
         </div>
@@ -105,7 +120,7 @@ export default function Carousel({ slides }) {
           </button>
           
           <div className={styles.dots}>
-            {slides.map((_, idx) => (
+            {processedSlides.map((_, idx) => (
               <button
                 key={idx}
                 className={`${styles.dot} ${idx === currentSlide ? styles.activeDot : ''}`}
@@ -126,7 +141,7 @@ export default function Carousel({ slides }) {
 
         {/* Slide counter */}
         <div className={styles.counter}>
-          {currentSlide + 1} / {slides.length}
+          {currentSlide + 1} / {processedSlides.length}
         </div>
       </div>
     </div>
