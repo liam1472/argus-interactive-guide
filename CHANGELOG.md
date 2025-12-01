@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.8] - 2025-12-01
+### Added
+- Download progress dialog with percentage, speed, and remaining time
+- In-app notification showing download progress in bottom-right corner
+- Beautiful dark-themed progress UI
+
+### Changed
+- Improved auto-update user experience with real-time progress feedback
+
 ## [1.0.7] - 2025-12-01
 ### Added
 - Release notes now automatically extracted from CHANGELOG.md and displayed in GitHub Releases

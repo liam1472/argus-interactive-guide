@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain } = require('electron');
 const path = require('path');
 const http = require('http');
 const fs = require('fs');
@@ -6,6 +6,7 @@ const { exec } = require('child_process');
 const { autoUpdater } = require('electron-updater');
 
 let mainWindow;
+let progressWindow = null;
 let server;
 const PORT = 8080;
 
@@ -16,6 +17,162 @@ const isAutoUpdateSupported = process.platform !== 'darwin';
 // Auto-updater configuration
 autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;
+
+// Create progress window for download
+function createProgressWindow() {
+  progressWindow = new BrowserWindow({
+    width: 400,
+    height: 160,
+    parent: mainWindow,
+    modal: true,
+    resizable: false,
+    minimizable: false,
+    maximizable: false,
+    closable: false,
+    frame: false,
+    transparent: false,
+    backgroundColor: '#1e1e1e',
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  });
+
+  const progressHTML = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+          color: #fff;
+          padding: 24px;
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        h3 { 
+          font-size: 16px; 
+          font-weight: 600; 
+          margin-bottom: 16px;
+          color: #4fc3f7;
+        }
+        .progress-container {
+          background: #333;
+          border-radius: 8px;
+          height: 12px;
+          overflow: hidden;
+          margin-bottom: 12px;
+        }
+        .progress-bar {
+          height: 100%;
+          background: linear-gradient(90deg, #4fc3f7 0%, #29b6f6 100%);
+          width: 0%;
+          transition: width 0.3s ease;
+          border-radius: 8px;
+        }
+        .stats {
+          display: flex;
+          justify-content: space-between;
+          font-size: 13px;
+          color: #aaa;
+        }
+        .percent { 
+          font-weight: 600; 
+          color: #4fc3f7;
+          font-size: 14px;
+        }
+      </style>
+    </head>
+    <body>
+      <h3>⬇️ Downloading Update...</h3>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="stats">
+        <span class="percent" id="percent">0%</span>
+        <span id="speed">-- MB/s</span>
+        <span id="remaining">Calculating...</span>
+      </div>
+      <script>
+        const { ipcRenderer } = require('electron');
+        ipcRenderer.on('download-progress', (event, data) => {
+          document.getElementById('progressBar').style.width = data.percent + '%';
+          document.getElementById('percent').textContent = data.percent + '%';
+          document.getElementById('speed').textContent = data.speed;
+          document.getElementById('remaining').textContent = data.remaining;
+        });
+      </script>
+    </body>
+    </html>
+  `;
+
+  progressWindow.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(progressHTML));
+}
+
+function closeProgressWindow() {
+  if (progressWindow) {
+    progressWindow.close();
+    progressWindow = null;
+  }
+}
+
+function formatBytes(bytes) {
+  if (bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+}
+
+function formatTime(seconds) {
+  if (!seconds || seconds === Infinity) return 'Calculating...';
+  if (seconds < 60) return Math.round(seconds) + 's remaining';
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.round(seconds % 60);
+  return mins + 'm ' + secs + 's remaining';
+}
+
+// Send progress to renderer (in-app notification)
+function sendProgressToRenderer(data) {
+  if (mainWindow && mainWindow.webContents) {
+    mainWindow.webContents.executeJavaScript(`
+      (function() {
+        let notification = document.getElementById('update-notification');
+        if (!notification) {
+          notification = document.createElement('div');
+          notification.id = 'update-notification';
+          notification.style.cssText = 'position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#1e1e1e,#2d2d2d);color:#fff;padding:16px 20px;border-radius:12px;font-family:system-ui;z-index:99999;min-width:280px;box-shadow:0 8px 32px rgba(0,0,0,0.3);border:1px solid #333;';
+          notification.innerHTML = '<div style="font-weight:600;margin-bottom:8px;color:#4fc3f7;">⬇️ Downloading Update</div><div style="background:#333;height:8px;border-radius:4px;overflow:hidden;margin-bottom:8px;"><div id="notif-progress" style="height:100%;background:linear-gradient(90deg,#4fc3f7,#29b6f6);width:0%;transition:width 0.3s;border-radius:4px;"></div></div><div style="display:flex;justify-content:space-between;font-size:12px;color:#aaa;"><span id="notif-percent">0%</span><span id="notif-speed">--</span><span id="notif-remaining">...</span></div>';
+          document.body.appendChild(notification);
+        }
+        document.getElementById('notif-progress').style.width = '${data.percent}%';
+        document.getElementById('notif-percent').textContent = '${data.percent}%';
+        document.getElementById('notif-speed').textContent = '${data.speed}';
+        document.getElementById('notif-remaining').textContent = '${data.remaining}';
+      })();
+    `).catch(() => {});
+  }
+}
+
+function removeRendererNotification() {
+  if (mainWindow && mainWindow.webContents) {
+    mainWindow.webContents.executeJavaScript(`
+      (function() {
+        const notification = document.getElementById('update-notification');
+        if (notification) {
+          notification.style.transition = 'opacity 0.3s, transform 0.3s';
+          notification.style.opacity = '0';
+          notification.style.transform = 'translateY(20px)';
+          setTimeout(() => notification.remove(), 300);
+        }
+      })();
+    `).catch(() => {});
+  }
+}
 
 // Auto-updater event handlers
 autoUpdater.on('checking-for-update', () => {
@@ -33,13 +190,10 @@ autoUpdater.on('update-available', (info) => {
     cancelId: 1
   }).then((result) => {
     if (result.response === 0) {
-      dialog.showMessageBox(mainWindow, {
-        type: 'info',
-        title: 'Downloading',
-        message: 'Download started. Please wait...',
-        buttons: ['OK']
-      });
+      createProgressWindow();
       autoUpdater.downloadUpdate().catch((err) => {
+        closeProgressWindow();
+        removeRendererNotification();
         dialog.showMessageBox(mainWindow, {
           type: 'error',
           title: 'Download Error',
@@ -56,14 +210,32 @@ autoUpdater.on('update-not-available', () => {
 });
 
 autoUpdater.on('download-progress', (progress) => {
-  console.log(`Download progress: ${Math.round(progress.percent)}%`);
+  const percent = Math.round(progress.percent);
+  const speed = formatBytes(progress.bytesPerSecond) + '/s';
+  const remaining = formatTime((progress.total - progress.transferred) / progress.bytesPerSecond);
+  
+  console.log(`Download: ${percent}% | ${speed} | ${remaining}`);
+  
+  // Taskbar progress
   if (mainWindow) {
     mainWindow.setProgressBar(progress.percent / 100);
   }
+  
+  // Progress window
+  if (progressWindow && progressWindow.webContents) {
+    progressWindow.webContents.send('download-progress', { percent, speed, remaining });
+  }
+  
+  // In-app notification
+  sendProgressToRenderer({ percent, speed, remaining });
 });
 
 autoUpdater.on('update-downloaded', (info) => {
   console.log('Update downloaded:', info.version);
+  
+  closeProgressWindow();
+  removeRendererNotification();
+  
   if (mainWindow) {
     mainWindow.setProgressBar(-1); // Remove progress bar
   }
@@ -83,6 +255,8 @@ autoUpdater.on('update-downloaded', (info) => {
 
 autoUpdater.on('error', (err) => {
   console.error('Auto-updater error:', err);
+  closeProgressWindow();
+  removeRendererNotification();
   dialog.showMessageBox(mainWindow, {
     type: 'error',
     title: 'Update Error',
