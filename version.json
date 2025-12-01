@@ -1,6 +1,6 @@
 {
-  "version": "1.0.1",
-  "buildDate": "2025-12-01T02:15:47.910Z",
+  "version": "1.0.2",
+  "buildDate": "2025-12-01T02:30:44.021Z",
   "updateUrl": "https://github.com/Fliight-Engineering/argus-interactive-guide/releases/latest",
   "versionCheckUrl": "https://raw.githubusercontent.com/Fliight-Engineering/argus-interactive-guide/main/static/version.json"
 }
