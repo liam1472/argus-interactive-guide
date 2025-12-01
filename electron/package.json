@@ -1,6 +1,6 @@
 {
   "name": "vts-guide-electron",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "VTS Guide - Offline Interactive Documentation for Argus VTS",
   "main": "main.js",
   "homepage": "https://github.com/Fliight-Engineering/argus-interactive-guide",
@@ -33,14 +33,18 @@
       {
         "from": "../build",
         "to": "build",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "extraResources": [
       {
         "from": "../build",
         "to": "build",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "mac": {

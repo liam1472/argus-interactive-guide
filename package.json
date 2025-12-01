@@ -1,11 +1,17 @@
 {
   "name": "argus-vts-guide",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start --host 0.0.0.0",
     "update-version": "node scripts/update-version.js",
+    "bump": "node scripts/bump-version.js",
+    "bump:minor": "node scripts/bump-version.js minor",
+    "bump:major": "node scripts/bump-version.js major",
+    "publish": "npm run bump && git add -A && git commit -m \"chore: bump version\" && git push origin main && npm run release",
+    "publish:minor": "npm run bump:minor && git add -A && git commit -m \"chore: bump minor version\" && git push origin main && npm run release",
+    "publish:major": "npm run bump:major && git add -A && git commit -m \"chore: bump major version\" && git push origin main && npm run release",
     "build": "npm run update-version && docusaurus build",
     "build:offline": "npm run update-version && cross-env OFFLINE_BUILD=true docusaurus build",
     "build:mac": "npm run build:offline && bash create-mac-app.sh",
