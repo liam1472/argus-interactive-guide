@@ -29,7 +29,20 @@ autoUpdater.on('update-available', (info) => {
     cancelId: 1
   }).then((result) => {
     if (result.response === 0) {
-      autoUpdater.downloadUpdate();
+      dialog.showMessageBox(mainWindow, {
+        type: 'info',
+        title: 'Downloading',
+        message: 'Download started. Please wait...',
+        buttons: ['OK']
+      });
+      autoUpdater.downloadUpdate().catch((err) => {
+        dialog.showMessageBox(mainWindow, {
+          type: 'error',
+          title: 'Download Error',
+          message: `Failed to download update: ${err.message}`,
+          buttons: ['OK']
+        });
+      });
     }
   });
 });
@@ -66,6 +79,12 @@ autoUpdater.on('update-downloaded', (info) => {
 
 autoUpdater.on('error', (err) => {
   console.error('Auto-updater error:', err);
+  dialog.showMessageBox(mainWindow, {
+    type: 'error',
+    title: 'Update Error',
+    message: `Auto-update error: ${err.message}\n\nPlease download manually from GitHub Releases.`,
+    buttons: ['OK']
+  });
 });
 
 // Find build directory
