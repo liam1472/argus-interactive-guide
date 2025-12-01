@@ -1,6 +1,6 @@
 {
   "name": "vts-guide-electron",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "VTS Guide - Offline Interactive Documentation for Argus VTS",
   "main": "main.js",
   "homepage": "https://github.com/Fliight-Engineering/argus-interactive-guide",
