@@ -20,6 +20,8 @@ cd electron && npm start        # Run Electron app
 
 ### Publish New Version
 ```bash
+# 1. Update CHANGELOG.md first!
+# 2. Then run publish
 npm run publish        # Patch: 1.0.4 → 1.0.5 (bug fixes)
 npm run publish:minor  # Minor: 1.0.5 → 1.1.0 (new features)
 npm run publish:major  # Major: 1.1.0 → 2.0.0 (breaking changes)
@@ -30,8 +32,8 @@ npm run publish:major  # Major: 1.1.0 → 2.0.0 (breaking changes)
 2. ✅ Commits and pushes to GitHub
 3. ✅ Creates git tag and triggers build workflow
 4. ✅ Builds app for Windows, macOS, Linux
-5. ✅ Uploads to GitHub Releases
-6. ✅ Users with old app will receive update notification
+5. ✅ Uploads to GitHub Releases with changelog
+6. ✅ Users with old app will receive update notification (Windows/Linux only)
 
 ### Update Website Only (without releasing app)
 ```bash
@@ -124,6 +126,20 @@ git push origin main
 1. Check `latest.yml` exists in GitHub Release
 2. Verify `artifactName` in `electron/package.json` matches actual filename
 3. Check app version is older than release version
+4. **Note:** macOS does NOT support auto-update (requires Apple Developer Certificate $99/year)
+
+### macOS app won't open ("app is damaged")
+macOS Gatekeeper blocks unsigned apps. Run these commands in Terminal:
+```bash
+# Copy app to Applications
+cp -R "/Volumes/VTS Guide/VTS Guide.app" /Applications/
+
+# Remove quarantine attribute
+xattr -cr "/Applications/VTS Guide.app"
+
+# Open app
+open "/Applications/VTS Guide.app"
+```
 
 ### AppImage won't run on Linux
 ```bash
@@ -138,6 +154,28 @@ chmod +x VTS-Guide-*.AppImage
 - [ ] Code changes committed
 - [ ] Test locally with `npm start`
 - [ ] Test Electron with `npm run build:offline && cd electron && npm start`
+- [ ] Update `CHANGELOG.md` with new version entry
 - [ ] Run `npm run publish`
 - [ ] Wait for GitHub Actions to complete (~5 min)
 - [ ] Verify release at GitHub Releases page
+- [ ] Verify changelog appears in release notes
+
+---
+
+## 📝 CHANGELOG.md Format
+
+Before releasing, add an entry to `CHANGELOG.md`:
+
+```markdown
+## [1.0.8] - 2025-12-02
+### Added
+- New feature description
+
+### Fixed
+- Bug fix description
+
+### Changed
+- Change description
+```
+
+The release workflow automatically extracts this and displays it in GitHub Release notes.

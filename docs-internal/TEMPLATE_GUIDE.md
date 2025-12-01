@@ -1,6 +1,6 @@
 # 🚀 Docusaurus + Electron Template
 
-Template để tạo documentation website với offline desktop app có auto-update.
+Template to create documentation website with offline desktop app and auto-update.
 
 ## Features
 
@@ -12,12 +12,12 @@ Template để tạo documentation website với offline desktop app có auto-up
 
 ---
 
-## 🎯 Sử dụng cho dự án mới
+## 🎯 Use for New Project
 
-### Bước 1: Copy các files cần thiết
+### Step 1: Copy Required Files
 
 ```bash
-# Từ project này, copy các folders/files sau:
+# From this project, copy the following folders/files:
 .github/workflows/
   ├── deploy.yml              # Deploy to GitHub Pages
   └── release-electron.yml    # Build Electron apps
@@ -37,7 +37,7 @@ src/components/
   └── VersionChecker/         # Version check component (optional)
 ```
 
-### Bước 2: Cập nhật config
+### Step 2: Update Config
 
 #### `electron/package.json`
 ```json
@@ -100,7 +100,7 @@ const versionData = {
 };
 ```
 
-### Bước 3: GitHub Settings
+### Step 3: GitHub Settings
 
 1. **Repository Settings → Pages**
    - Source: `Deploy from a branch`
@@ -109,14 +109,14 @@ const versionData = {
 2. **Repository Settings → Actions → General**
    - Workflow permissions: `Read and write permissions`
 
-### Bước 4: Install Dependencies
+### Step 4: Install Dependencies
 
 ```bash
 npm install cross-env --save-dev
 cd electron && npm install
 ```
 
-### Bước 5: First Release
+### Step 5: First Release
 
 ```bash
 npm run publish

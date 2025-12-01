@@ -9,11 +9,20 @@ npm install
 npm start           # Dev server at http://localhost:3000
 ```
 
-## 📦 Release
+## 📦 Release New Version
 
 ```bash
-npm run publish     # Bump patch version & release (1.0.4 → 1.0.5)
+# 1. Update CHANGELOG.md with new version entry
+# 2. Run publish command
+npm run publish     # Bump version, build apps, create GitHub Release
 ```
+
+## ✨ Features
+
+- **Website**: Auto-deploy to GitHub Pages on push
+- **Desktop Apps**: Windows (.exe), macOS (.dmg), Linux (.AppImage, .deb)
+- **Auto-Update**: Windows & Linux apps auto-update from GitHub Releases
+- **Offline Mode**: Full documentation available offline
 
 ## 📁 Project Structure
 
@@ -25,15 +34,16 @@ npm run publish     # Bump patch version & release (1.0.4 → 1.0.5)
 ├── scripts/              # Build & utility scripts
 ├── src/                  # React components & styles
 ├── static/               # Static assets
+├── CHANGELOG.md          # Release notes
 ├── docusaurus.config.js  # Site configuration
 └── package.json          # Project config
 ```
 
 ## 📖 Documentation
 
-- [Developer Guide](docs-internal/DEVELOPER_GUIDE.md) - How to develop & release
+- [Deployment Guide](docs-internal/DEPLOYMENT_AND_UPDATES.md) - CI/CD & auto-update
+- [Developer Guide](docs-internal/DEVELOPER_GUIDE.md) - Development workflow
 - [Template Guide](docs-internal/TEMPLATE_GUIDE.md) - Reuse for other projects
-- [Deployment Guide](docs-internal/DEPLOYMENT_AND_UPDATES.md) - Deployment details
 
 ## 🔗 Links
 
