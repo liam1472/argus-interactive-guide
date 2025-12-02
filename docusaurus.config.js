@@ -90,7 +90,7 @@ const config = {
         disableSwitch: false,
       },
       navbar: {
-        title: 'Argus VTS',
+        title: 'Argus VTS Guide',
         logo: {
           alt: 'Argus VTS Logo',
           src: 'img/vts-guide/argus-logo.png',

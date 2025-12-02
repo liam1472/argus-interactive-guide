@@ -121,13 +121,6 @@ export default function HomepageFeatures() {
           <ManualIcon />
           Full Manual
         </Link>
-        <button
-          onClick={handleTestUpdate}
-          className={styles.testButton}
-          title="Test update UI"
-        >
-          Test Update
-        </button>
       </div>
       <VersionChecker />
       <UpdateModal
