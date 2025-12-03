@@ -417,6 +417,19 @@ function startServer(buildDir) {
 }
 
 function createWindow() {
+  // Register IPC handlers for window controls FIRST
+  ipcMain.handle('window-minimize', () => {
+    if (mainWindow) {
+      mainWindow.minimize();
+    }
+  });
+
+  ipcMain.handle('window-close', () => {
+    if (mainWindow) {
+      mainWindow.close();
+    }
+  });
+
   // Find build directory
   const buildDir = findBuildDir();
   
@@ -496,19 +509,6 @@ function createWindow() {
       // Handle window closed
       mainWindow.on('closed', () => {
         mainWindow = null;
-      });
-
-      // IPC handlers for window controls
-      ipcMain.handle('window-minimize', () => {
-        if (mainWindow) {
-          mainWindow.minimize();
-        }
-      });
-
-      ipcMain.handle('window-close', () => {
-        if (mainWindow) {
-          mainWindow.close();
-        }
       });
     })
     .catch((err) => {
