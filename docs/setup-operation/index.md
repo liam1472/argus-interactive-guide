@@ -9,7 +9,7 @@ This section guides you through the complete setup and operation of the Argus VT
 
 <div class="setup-overview-grid">
 
-<a href="access-points-initialization" class="setup-overview-card">
+<a href="/docs/setup-operation/access-points-initialization" class="setup-overview-card">
 
 ### <span class="card-icon">📡</span> AP's: Initialization
 
@@ -21,7 +21,7 @@ Set up the Machine Access Point by folding out antennas, positioning the mast, a
 
 </a>
 
-<a href="cameras" class="setup-overview-card">
+<a href="/docs/setup-operation/cameras" class="setup-overview-card">
 
 ### <span class="card-icon">📷</span> Cameras
 
@@ -33,7 +33,7 @@ Power on and sync the remote camera systems once access points are meshed.
 
 </a>
 
-<a href="tablet-setup" class="setup-overview-card">
+<a href="/docs/setup-operation/tablet-setup" class="setup-overview-card">
 
 ### <span class="card-icon">💻</span> Tablet Set Up
 
@@ -45,7 +45,7 @@ Configure the trainer tablet PC for landscape mode and connect to the VTS networ
 
 </a>
 
-<a href="vehicle-setup" class="setup-overview-card">
+<a href="/docs/setup-operation/vehicle-setup" class="setup-overview-card">
 
 ### <span class="card-icon">🚛</span> Vehicle Set Up
 
@@ -57,7 +57,7 @@ Mount the Machine AP on the vehicle and position cameras for optimal training vi
 
 </a>
 
-<a href="access-points-deployment" class="setup-overview-card">
+<a href="/docs/setup-operation/access-points-deployment" class="setup-overview-card">
 
 ### <span class="card-icon">📍</span> AP's: Deployment
 
@@ -69,7 +69,7 @@ Deploy repeater access points to extend network coverage and create safe trainer
 
 </a>
 
-<a href="best-practices" class="setup-overview-card">
+<a href="/docs/setup-operation/best-practices" class="setup-overview-card">
 
 ### <span class="card-icon">✨</span> Best Practices
 

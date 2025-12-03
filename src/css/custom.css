@@ -4,6 +4,33 @@
  * work well for content-centric websites.
  */
 
+/* Hide scrollbars globally */
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  overflow: hidden;
+  height: 100%;
+}
+
+/* Allow scrolling in main content area only */
+.main-wrapper {
+  overflow-y: auto;
+  height: 100vh;
+}
+
+/* Hide scrollbar but keep functionality */
+.main-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.main-wrapper {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #00B050;

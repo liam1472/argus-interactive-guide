@@ -1,25 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styles from './styles.module.css';
 
 export default function WindowControls() {
-  const [isElectron, setIsElectron] = useState(false);
+  // Check if we're running in Electron
+  const isElectron = typeof window !== 'undefined' && window.electronAPI;
 
-  useEffect(() => {
-    // Check if we're running in Electron (via preload script)
-    if (typeof window !== 'undefined' && window.electronAPI) {
-      setIsElectron(true);
-    }
-  }, []);
-
-  const handleMinimize = () => {
-    if (window.electronAPI) {
-      window.electronAPI.minimize();
+  const handleMinimize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Minimize clicked');
+    if (window.electronAPI && window.electronAPI.minimize) {
+      window.electronAPI.minimize()
+        .then(() => console.log('Minimize success'))
+        .catch(err => console.error('Minimize error:', err));
+    } else {
+      console.error('electronAPI.minimize not available');
     }
   };
 
-  const handleClose = () => {
-    if (window.electronAPI) {
-      window.electronAPI.close();
+  const handleClose = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Close clicked');
+    if (window.electronAPI && window.electronAPI.close) {
+      window.electronAPI.close()
+        .then(() => console.log('Close success'))
+        .catch(err => console.error('Close error:', err));
+    } else {
+      console.error('electronAPI.close not available');
     }
   };
 
