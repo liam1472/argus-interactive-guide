@@ -1109,3 +1109,54 @@ h2 + .rcs-section-container {
   margin: 1.5rem 0;
   width: 100%;
 }
+
+/* Fix content overflow on high DPI/scaled displays (Surface Pro 250%) */
+.main-wrapper {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+article {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Ensure markdown content doesn't overflow into sidebar */
+.markdown {
+  max-width: 100%;
+  overflow-x: auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Fix tables on scaled displays */
+.markdown table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fix images on scaled displays */
+.markdown img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fix code blocks on scaled displays */
+.markdown pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Adjust sidebar width on high-resolution displays */
+@media (min-width: 997px) {
+  .docSidebarContainer_node_modules-\@docusaurus-theme-classic-lib-theme-DocPage-Layout-Sidebar-styles-module {
+    max-width: 300px;
+    flex-shrink: 0;
+  }
+  
+  .docMainContainer_node_modules-\@docusaurus-theme-classic-lib-theme-DocPage-Layout-Main-styles-module {
+    max-width: calc(100% - 300px);
+  }
+}

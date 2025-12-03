@@ -464,8 +464,8 @@ function createWindow() {
 
       // Create the browser window
       mainWindow = new BrowserWindow({
-        width: 1200,
-        height: 800,
+        width: 1920,
+        height: 1080,
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
@@ -473,8 +473,16 @@ function createWindow() {
           contextIsolation: true,
           preload: path.join(__dirname, 'preload.js'),
         },
-        icon: path.join(__dirname, '..', 'static', 'img', 'vts-guide', 'image29.png'),
+        icon: path.join(__dirname, '..', 'static', 'img', 'vts-guide', 'argus-logo.png'),
         title: 'VTS Guide',
+        // Start maximized (fullscreen)
+        show: false, // Don't show until ready
+      });
+
+      // Maximize window when ready
+      mainWindow.once('ready-to-show', () => {
+        mainWindow.maximize();
+        mainWindow.show();
       });
 
       // Load the local server

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.14] - 2025-12-03
+### Changed
+- Fixed window controls not working, app now starts maximized, fixed content overflow at 250% scale, removed unnecessary scrollbars in carousel
+
 ## [1.0.13] - 2025-12-02
 ### Added
 - Custom window controls for Electron app (minimize, maximize, close)
